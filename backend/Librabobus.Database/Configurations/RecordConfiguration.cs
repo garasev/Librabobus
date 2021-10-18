@@ -16,7 +16,5 @@ namespace Librabobus.Database.Configurations
             builder.Property(record => record.Type).IsRequired();
             builder.Property(record => record.Content).IsRequired();
         }
-
-
     }
 }
