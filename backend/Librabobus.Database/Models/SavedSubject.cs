@@ -6,8 +6,12 @@ namespace Librabobus.Database.Models
 {
     public class SavedSubject
     {
-        public Guid UserId { get; set }
-        public Guid SubjectId { get; set }
+        public Guid UserId { get; set; }
+        public Guid SubjectId { get; set; }
+
+        public User? User { get; set; }
+        public Subject? Subject { get; set; }
+
         public SavedSubject(Guid userId, 
             Guid subjectId)
         {

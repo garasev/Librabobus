@@ -13,7 +13,7 @@ namespace Librabobus.Database.Models
         public string? KeyWords { get; set; }
         public Record(Guid id, 
             string name,
-            string type, 
+            TypeRecord type, 
             string content,
             string? keyWords)
         {

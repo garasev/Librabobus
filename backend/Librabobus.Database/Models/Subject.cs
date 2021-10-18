@@ -8,10 +8,13 @@ namespace Librabobus.Database.Models
     {
         public Guid Id { get; }
         public Guid OwnerId { get; }
-        public string Name { get; set }
-        public bool Privat { get; set }
-        public string? Description { get; set }
+        public string Name { get; set; }
+        public bool Privat { get; set; }
+        public string? Description { get; set; }
         public string? PhotoBase64 { get; set; }
+
+        public User? Owner { get; set; }
+
         public ICollection<Record>? Records { get; set; }
         public ICollection<SavedSubject>? SavedSubjects { get; set; }
         public Subject(Guid id, 
@@ -26,7 +29,7 @@ namespace Librabobus.Database.Models
             Name = name;
             Privat = privat;
             Description = description;
-            PhotoBase64 = photoBase;
+            PhotoBase64 = photoBase64;
         }
     }
 }

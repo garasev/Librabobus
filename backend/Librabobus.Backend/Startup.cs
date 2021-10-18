@@ -28,7 +28,7 @@ namespace Librabobus.Backend
             var connectionString = Configuration.GetConnectionString("Librabobus");
             services.AddEntityFrameworkNpgsql().AddDbContext<LibrabobusDbContext>(options =>
                 options.UseNpgsql(connectionString,
-                    x => x.MigrationsAssembly("Qoollo.Hamster.Backend"))
+                    x => x.MigrationsAssembly("Librabobus.Backend"))
             );
             services.AddHealthChecks();
 

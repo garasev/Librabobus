@@ -7,11 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers" />
-      <Folder Include="Dtos" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\Librabobus.Database\Librabobus.Database.csproj" />
     </ItemGroup>
 
