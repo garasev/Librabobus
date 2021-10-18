@@ -11,6 +11,9 @@ namespace Librabobus.Database.Models
         public TypeRecord Type { get; set; }
         public string Content { get; set; }
         public string? KeyWords { get; set; }
+
+        public Subject? Subject { get; set; }
+
         public Record(Guid id, 
             string name,
             TypeRecord type, 
