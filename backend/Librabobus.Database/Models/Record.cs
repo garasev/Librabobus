@@ -7,7 +7,7 @@ namespace Librabobus.Database.Models
     public class Record
     {
         public Guid Id { get; }
-        public Guid SubjectId { get; }
+        public Guid SubjectId { get; set; }
         public string Name { get; set; }
         public TypeRecord Type { get; set; }
         public string Content { get; set; }
