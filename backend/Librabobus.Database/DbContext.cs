@@ -1,4 +1,6 @@
 ﻿using System;
+using Librabobus.Database.Configurations;
+using Librabobus.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Librabobus.Database
@@ -22,7 +24,7 @@ namespace Librabobus.Database
             modelBuilder.ApplyConfiguration(new RecordConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new SavedSubjectConfiguration());
-            modelBuilder.ApplyConfiguration(new SubscriprionConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionConfiguration());
             modelBuilder.ApplyConfiguration(new SubjectConfiguration());
         }
 
