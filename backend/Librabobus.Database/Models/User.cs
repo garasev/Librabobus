@@ -16,6 +16,7 @@ namespace Librabobus.Database.Models
         public ICollection<Subject>? Subjects { get; set; }
         public ICollection<SavedSubject>? SavedSubjects { get; set; }
         public ICollection<Subscription>? Subscriptions { get; set; }
+        public ICollection<Subscription>? Subscribers { get; set; }
         public User(Guid id,
             string name,
             string? about, 
