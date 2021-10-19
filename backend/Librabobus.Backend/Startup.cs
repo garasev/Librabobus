@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Librabobus.Backend.Dtos;
+using Librabobus.Backend.Repositories.Impl;
 using Librabobus.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,6 +35,8 @@ namespace Librabobus.Backend
             services.AddHealthChecks();
 
             services.AddControllers();
+            services.AddRepositories();
+            services.AddDtoConverters();
 
             services.AddSwaggerGen();
         }

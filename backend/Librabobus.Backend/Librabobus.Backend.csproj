@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Librabobus.Backend.Repositories.Impl\Librabobus.Backend.Repositories.Impl.csproj" />
         <ProjectReference Include="..\Librabobus.Database\Librabobus.Database.csproj" />
     </ItemGroup>
 

@@ -6,4 +6,10 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\Librabobus.Backend.Repositories.Api\Librabobus.Backend.Repositories.Api.csproj" />
+        <ProjectReference Include="..\Librabobus.Database\Librabobus.Database.csproj" />
+    </ItemGroup>
+
+
 </Project>

@@ -10,6 +10,7 @@ namespace Librabobus.Database.Models
         public string Name { get; set; }
         public string? About { get; set; }
         public string? PhotoBase64 { get; set; }
+        public string Login { get; set; }
         public string Hash { get; set; }
         public string Salt { get; set; }
         
@@ -21,6 +22,7 @@ namespace Librabobus.Database.Models
             string name,
             string? about, 
             string? photoBase64,
+            string login,
             string hash,
             string salt)
         {
@@ -28,6 +30,7 @@ namespace Librabobus.Database.Models
             Name = name;
             About = about;
             PhotoBase64 = photoBase64;
+            Login = login;
             Hash = hash;
             Salt = salt;
         }

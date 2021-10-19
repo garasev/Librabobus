@@ -13,6 +13,8 @@ namespace Librabobus.Database.Configurations
             builder.HasKey(user => user.Id);
             
             builder.Property(user => user.Name).IsRequired();
+            builder.Property(user => user.Login).IsRequired();
+            builder.HasIndex(user => user.Login).IsUnique();
             builder.Property(user => user.Hash).IsRequired();
             builder.Property(user => user.Salt).IsRequired();
             

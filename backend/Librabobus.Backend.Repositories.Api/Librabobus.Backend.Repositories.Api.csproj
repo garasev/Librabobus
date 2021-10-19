@@ -6,4 +6,8 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\Librabobus.Backend.Models\Librabobus.Backend.Models.csproj" />
+    </ItemGroup>
+    
 </Project>

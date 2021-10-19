@@ -3,15 +3,17 @@ using System;
 using Librabobus.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Librabobus.Backend.Migrations
 {
     [DbContext(typeof(LibrabobusDbContext))]
-    partial class LibrabobusDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211019151215_UserLogin")]
+    partial class UserLogin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
