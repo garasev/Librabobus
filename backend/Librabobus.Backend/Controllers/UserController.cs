@@ -6,6 +6,7 @@ using Librabobus.Backend.Models.User;
 using Librabobus.Backend.Repositories.Api;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Librabobus.Backend.Controllers
 {
@@ -30,6 +31,10 @@ namespace Librabobus.Backend.Controllers
         /// <response code="500">Ошибка на стороне сервера.</response>
         [HttpGet]
         [Route("{id:guid}")]
+        [SwaggerOperation("Получить страницу пользователя по id.")]
+        [SwaggerResponse(statusCode: 200, type: typeof(UserPageDto), description: "Получена страница.")]
+        [SwaggerResponse(statusCode: 500, type: typeof(EmptyResult), description: "Ошибка на стороне сервера.")]
+
         public async Task<IActionResult> GetUserPage(Guid id)
         {
             IActionResult response;
@@ -43,6 +48,18 @@ namespace Librabobus.Backend.Controllers
                 response = StatusCode(StatusCodes.Status500InternalServerError, ex.Message); 
             }
             return response;
+        }
+        
+        /// <summary>
+        /// Получить страницу пользователя по id.
+        /// </summary>
+        /// <response code="200">Получена страница.</response>
+        /// <response code="500">Ошибка на стороне сервера.</response>
+        [HttpGet]
+        [Route("{id:guid}/subscribers")]
+        public Task<IActionResult> GetSubscribers(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
     }
