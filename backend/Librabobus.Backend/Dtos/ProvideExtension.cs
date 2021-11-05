@@ -10,6 +10,7 @@ namespace Librabobus.Backend.Dtos
         public static IServiceCollection AddDtoConverters(this IServiceCollection services)
         {
             services.AddTransient<IDtoConverter<UserPageModel, UserPageDto>, UserPageConverter>();
+            services.AddTransient<IDtoConverter<UserSubModel, UserSubDto>, UserSubConverter>();
             return services;
         }
     }
