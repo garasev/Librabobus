@@ -41,5 +41,16 @@ namespace Librabobus.Backend.Repositories.Impl
                 subjects: subjects
             );
         }
+
+        public async Task<List<UserSubModel>> GetSubscribers(Guid id)
+        {
+            var users = await _context.Subscription!
+                .Where(s => s.UserToId == id)
+                .Include(s => s.UserFrom)
+                .ToListAsync();
+
+            return users.Select(sub => new UserSubModel(id: sub.UserFrom!.Id,
+                name: sub.UserFrom!.Name, photoBase64: sub.UserFrom!.PhotoBase64!)).ToList();
+        }
     }
 }

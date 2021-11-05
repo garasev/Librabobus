@@ -12,6 +12,8 @@ namespace Librabobus.Backend.Dtos
         {
             services.AddTransient<IDtoConverter<UserPageModel, UserPageDto>, UserPageConverter>();
             services.AddTransient<IDtoConverter<RecordModel, RecordDto>, RecordConverter>();
+            services.AddTransient<IDtoConverter<UserSubModel, UserSubDto>, UserSubConverter>();
+
             return services;
         }
     }
