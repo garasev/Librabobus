@@ -91,7 +91,7 @@ namespace Librabobus.Backend.Controllers
         /// <summary>
         /// Добавить предмет.
         /// </summary>
-        /// <param name="recordDto">Dto нового предмета</param>
+        /// <param name="subjectDto">Dto нового предмета</param>
         /// <response code="200">Предмет успешно добавлен.</response>
         /// <response code="500">Ошибка на стороне сервера.</response>
         [HttpPost]

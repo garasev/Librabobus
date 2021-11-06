@@ -31,13 +31,15 @@ namespace Librabobus.Backend.Repositories.Impl
                 .Where(u => u.Id == id)
                 .Include(u => u.Records)
                 .FirstOrDefaultAsync();
-            
+
             return _converter.Convert(subject);
         }
         
         public async Task<List<SubjectModel>> FindAllSubjectAsync()
         {
-            var subjects = await _context.Subject!.ToListAsync();
+            var subjects = await _context.Subject!
+                .Include(u => u.Records)
+                .ToListAsync();
             
             return subjects.Select(subject => _converter.Convert(subject)).ToList();
         }
