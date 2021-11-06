@@ -1,4 +1,5 @@
 ﻿using Librabobus.Backend.Models.Record;
+using Librabobus.Backend.Models.Subject;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Librabobus.Backend.Models
@@ -14,6 +15,9 @@ namespace Librabobus.Backend.Models
         {
             services.AddTransient<IModelConverter<RecordModel, Database.Models.Record>,
                 RecordModelConverter>();
+            
+            services.AddTransient<IModelConverter<SubjectModel, Database.Models.Subject>,
+                SubjectModelConverter>();
             return services;
         }
     }

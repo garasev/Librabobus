@@ -4,8 +4,10 @@ using System.Linq;
 using Librabobus.Backend.Dtos;
 using Librabobus.Backend.Dtos.Record;
 using System.Collections.Generic;
+using Librabobus.Backend.Dtos.Subject;
 using Librabobus.Backend.Dtos.User;
 using Librabobus.Backend.Models.Record;
+using Librabobus.Backend.Models.Subject;
 using Librabobus.Backend.Models.User;
 using Librabobus.Backend.Repositories.Api;
 using Librabobus.Backend.Repositories.Impl.Exceptions;
@@ -15,36 +17,36 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Librabobus.Backend.Controllers
 {
-    [Route("records")]
+    [Route("subjects")]
     [ApiController]
-    public class RecordController: ControllerBase
+    public class SubjectController: ControllerBase
     {
-        readonly private IRecordRepository _recordRepository;
-        readonly private IDtoConverter<RecordModel, RecordDto> _recordConverter;
+        readonly private ISubjectRepository _subjectRepository;
+        readonly private IDtoConverter<SubjectModel, SubjectDto> _subjectConverter;
 
-        public RecordController(IRecordRepository recordRepository,
-            IDtoConverter<RecordModel, RecordDto> recordConverter)
+        public SubjectController(ISubjectRepository subjectRepository,
+            IDtoConverter<SubjectModel, SubjectDto> subjectConverter)
         {
-            _recordRepository = recordRepository;
-            _recordConverter = recordConverter;
+            _subjectRepository = subjectRepository;
+            _subjectConverter = subjectConverter;
         }
         
          /// <summary>
-        /// Получить все записи.
+        /// Получить все предметы.
         /// </summary>
-        /// <response code="200">Получены все записии.</response>
+        /// <response code="200">Получены все предметы.</response>
         /// <response code="500">Ошибка на стороне сервера.</response>
         [HttpGet]
         [SwaggerOperation("Получить все записи.")]
-        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(List<RecordDto>), description: "Получены все записи.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(List<SubjectDto>), description: "Получены все предметы.")]
         [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(EmptyResult), description: "Ошибка на стороне сервера.")]
-        public async Task<IActionResult> GetRecords()
+        public async Task<IActionResult> GetSubjects()
         {
             IActionResult response;
             try
             {
-                var records = await _recordRepository.FindAllRecordAsync();
-                response = Ok(records.Select(record => _recordConverter.Convert(record)).ToArray());
+                var subjects = await _subjectRepository.FindAllSubjectAsync();
+                response = Ok(subjects.Select(subject => _subjectConverter.Convert(subject)).ToArray());
             }
             catch(Exception ex)
             {
@@ -53,31 +55,31 @@ namespace Librabobus.Backend.Controllers
             return response;
         }
         /// <summary>
-        /// Получить запись по id.
+        /// Получить предемет по id.
         /// </summary>
-        /// <param name="id">Идентификатор записи.</param>
-        /// <response code="200">Получена запись с необходимым id.</response>
-        /// <response code="404">Запись с указанным id не найдена.</response>
+        /// <param name="id">Идентификатор предмета.</param>
+        /// <response code="200">Получен предмет с необходимым id.</response>
+        /// <response code="404">Предмет с указанным id не найден.</response>
         /// <response code="500">Ошибка на стороне сервера.</response>
         [HttpGet]
         [Route("{id:guid}")]
-        [SwaggerOperation("Получить запись по id.")]
-        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(RecordDto), description: "Получена запись с необходимым id.")]
-        [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, type: typeof(EmptyResult), description: "Запись с указанным id не найдена.")]
+        [SwaggerOperation("Получить предмет по id.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(SubjectDto), description: "Получен предмет с необходимым id.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, type: typeof(EmptyResult), description: "Предмет с указанным id не найден.")]
         [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(EmptyResult), description: "Ошибка на стороне сервера.")]
-        public async Task<IActionResult> GetRecordById(Guid id)
+        public async Task<IActionResult> GetSubjectById(Guid id)
         {
             IActionResult response;
             try
             {
-                var record = await _recordRepository.FindRecordAsync(id);
-                if (record == null!)
+                var subject = await _subjectRepository.FindSubjectAsync(id);
+                if (subject == null!)
                 {
                     response = NotFound("Category with such Id: {id} not found.");
                 }
                 else
                 {
-                    response = Ok(_recordConverter.Convert(record));
+                    response = Ok(_subjectConverter.Convert(subject));
                 }
             }
             catch(Exception ex)
@@ -87,17 +89,17 @@ namespace Librabobus.Backend.Controllers
             return response;
         }
         /// <summary>
-        /// Добавить запись.
+        /// Добавить предмет.
         /// </summary>
-        /// <param name="recordDto">Dto новой записи</param>
-        /// <response code="200">Запись успешно добавлена.</response>
+        /// <param name="recordDto">Dto нового предмета</param>
+        /// <response code="200">Предмет успешно добавлен.</response>
         /// <response code="500">Ошибка на стороне сервера.</response>
         [HttpPost]
-        [SwaggerOperation("Добавить категорию.")]
-        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(RecordDto), description: "Запись успешно добавлена.")]
+        [SwaggerOperation("Добавить предмет.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(SubjectDto), description: "Предмет успешно добавлен.")]
         [SwaggerResponse(statusCode: StatusCodes.Status409Conflict, type: typeof(EmptyResult), description: "Параметры не прошли проверку на уникальность.")]
         [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(EmptyResult), description: "Ошибка на стороне сервера.")]
-        public async Task<IActionResult> PostRecord([FromBody] RecordDto recordDto)
+        public async Task<IActionResult> PostSubject([FromBody] SubjectDto subjectDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -105,8 +107,8 @@ namespace Librabobus.Backend.Controllers
             IActionResult response;
             try
             {
-                var record = await _recordRepository.AddRecordAsync(_recordConverter.Convert(recordDto));
-                response = Ok(_recordConverter.Convert(record));
+                var subject = await _subjectRepository.AddSubjectAsync(_subjectConverter.Convert(subjectDto));
+                response = Ok(_subjectConverter.Convert(subject));
             }
             catch(RepositoryConflictException ex)
             {
@@ -119,22 +121,22 @@ namespace Librabobus.Backend.Controllers
             return response;
         }
         /// <summary>
-        /// Изменить существующую запись.
+        /// Изменить существующий предмет.
         /// </summary>
-        /// <param name="id">Id изменяемой записи.</param>
-        /// <param name="recordDto">Измененный dto записи.</param>
-        /// <response code="200">Запись успешно изменена.</response>
+        /// <param name="id">Id изменяемого предмета.</param>
+        /// <param name="recordDto">Измененный dto предмета.</param>
+        /// <response code="200">Предмет успешно изменен.</response>
         /// <response code="400">Параметры не прошли проверку.</response>
-        /// <response code="404">Запись не найдена.</response>
+        /// <response code="404">Предмет не найден.</response>
         /// <response code="500">Ошибка на стороне сервера.</response>
         [HttpPut]
         [Route("{id:guid}")]
-        [SwaggerOperation("Изменить существующую запись.")]
-        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(RecordDto), description: "Запись успешно изменена.")]
+        [SwaggerOperation("Изменить существующий предмет.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(SubjectDto), description: "Предмет успешно изменен.")]
         [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, type: typeof(EmptyResult), description: "Параметры не прошли проверку.")]
-        [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, type: typeof(EmptyResult), description: "Запись не найдена.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, type: typeof(EmptyResult), description: "Предмет не найден.")]
         [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(EmptyResult), description: "Ошибка на стороне сервера.")]
-        public async Task<IActionResult> PutRecord(Guid id, [FromBody] RecordDto recordDto)
+        public async Task<IActionResult> PutSubject(Guid id, [FromBody] SubjectDto subjectDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -142,8 +144,8 @@ namespace Librabobus.Backend.Controllers
             IActionResult response;
             try
             {
-                var record = await _recordRepository.UpdateRecordAsync(_recordConverter.Convert(recordDto));
-                response = Ok(_recordConverter.Convert(record));
+                var subject = await _subjectRepository.UpdateSubjectAsync(_subjectConverter.Convert(subjectDto));
+                response = Ok(_subjectConverter.Convert(subject));
             }
             catch(NotFoundException ex)
             {
@@ -156,23 +158,23 @@ namespace Librabobus.Backend.Controllers
             return response;
         }
         /// <summary>
-        /// Удалить существующую запись.
+        /// Удалить существующий предмет.
         /// </summary>
-        /// <param name="id">Id удаляемой записи.</param>
-        /// <response code="200">Запись успешно удалена.</response>
+        /// <param name="id">Id удаляемого предмета.</param>
+        /// <response code="200">Предмет успешно удален.</response>
         /// <response code="500">Ошибка на стороне сервера.</response>
         [HttpDelete]
         [Route("{id:guid}")]
-        [SwaggerOperation("Удалить существующую запись.")]
-        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(RecordDto), description: "Запись успешно удалена.")]
+        [SwaggerOperation("Удалить существующий предмет.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(RecordDto), description: "Предмет успешно удален.")]
         [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(EmptyResult), description: "Ошибка на стороне сервера.")]
-        public async Task<IActionResult> DeleteRecord(Guid id)
+        public async Task<IActionResult> DeleteSubject(Guid id)
         {
             IActionResult response;
             try
             {
-                var record = await _recordRepository.DeleteRecordAsync(id);
-                response = Ok(_recordConverter.Convert(record));
+                var subject = await _subjectRepository.DeleteSubjectAsync(id);
+                response = Ok(_subjectConverter.Convert(subject));
             }
             catch(Exception ex)
             {
