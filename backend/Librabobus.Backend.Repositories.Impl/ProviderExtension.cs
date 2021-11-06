@@ -10,6 +10,7 @@ namespace Librabobus.Backend.Repositories.Impl
         {
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRecordRepository, RecordRepository>();
+            services.AddTransient<ISubjectRepository, SubjectRepository>();
             return services;
         }
 
