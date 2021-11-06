@@ -12,4 +12,10 @@
         <ProjectReference Include="..\Librabobus.Database\Librabobus.Database.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Enums" />
+        <Folder Include="Record" />
+    </ItemGroup>
+
+
 </Project>
