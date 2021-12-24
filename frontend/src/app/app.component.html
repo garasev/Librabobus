@@ -1,0 +1,6 @@
+<div class="side-container">
+  <app-navbar *ngIf="auth$ | async"></app-navbar>
+  <main>
+      <router-outlet></router-outlet>
+  </main>
+</div>

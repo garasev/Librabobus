@@ -1,0 +1,132 @@
+:host {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    height: 100%;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    margin-bottom: 10px;
+
+    h1 {
+        margin: 0;
+        color: white;
+    }
+    
+    mat-icon {
+        display: flex;
+        font-size: 39px !important;
+        height: 39px !important;
+        width: 39px !important;
+        align-items: center;
+        margin-bottom: 2px !important;
+        color: white;
+    }
+}
+
+.description {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    width: 100%;
+    margin-bottom: 16px;
+    .title {
+        width: 60%;
+        font-family: Roboto;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 38px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: white;
+    }
+}
+
+.fields {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    gap: 15px;
+    margin-bottom: 50px;
+    input {
+        background: #414141;
+        height: 39px;
+        border-color: transparent;
+    }
+
+    input[placeholder] {
+        color: #A9A9A9 !important;
+    }
+
+    .password {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        input {
+            background: #414141;
+            height: 39px;
+            border-color: transparent;
+        }
+
+        input[placeholder] {
+            color: #A9A9A9 !important;
+        }
+
+        a {
+            font-size: 15px;
+            line-height: 18px;
+            text-decoration-line: underline;
+
+            color: #A9A9A9;
+        }
+    }
+}
+
+.action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    gap: 15px;
+    .auth {
+        background: #F9F9F9;
+        border-radius: 30px;
+        width: 60%;
+        height: 48px;
+        font-size: 18px;
+        line-height: 21px;
+        font-weight: 600;
+    }
+    .registration {
+        display: flex;
+        gap: 4px;
+
+        .registration_title {
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 21px;
+            color: #A9A9A9;
+        }
+
+        a {
+            color: #FFFFFF;
+            font-size: 18px;
+            line-height: 21px;
+        }
+    }
+}

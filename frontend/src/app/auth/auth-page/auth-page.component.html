@@ -1,0 +1,30 @@
+<div class="page">
+    <div class="logo">
+        <mat-icon [inline]="true">menu_book</mat-icon>
+        <h1>Librabobus</h1>
+    </div>
+    
+    <div class="description">
+        <p class="title">{{description}}</p>
+    </div>
+
+    <div class="fields">
+       <input placeholder="Логин">
+       <div class="password">
+            <input placeholder="Пароль">
+            <a>
+                <p>Сброс пароля</p>
+            </a>
+       </div>
+    </div>
+
+    <div class="action">
+        <button class="auth">ВОЙТИ</button>
+        <div class="registration">
+            <p class="registration_title">Еще нет аккаунта?</p>
+            <a routerLink="/registration" routerLinkActive="active">
+                <p>ЗАРЕГИСТРИРУЙСЯ</p>
+            </a>
+        </div>
+    </div>
+</div>
