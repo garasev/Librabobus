@@ -65,7 +65,7 @@ export class AuthService {
     } catch (error) {
       if (error instanceof HttpErrorResponse
           && error.status === 401) {
-              console.log('dolboeb');
+              console.log('test');
        // this.notifications.showSnackBar('Ошибка: неверно введён логин или пароль');
       }
     }

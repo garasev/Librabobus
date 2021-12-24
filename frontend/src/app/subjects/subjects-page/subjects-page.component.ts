@@ -11,12 +11,12 @@ import { SubjectsService } from '../services/subjects.service';
 })
 export class SubjectsPageComponent implements OnInit {
 
-  public searchProject = new FormControl('');
+  public searchSubject = new FormControl('');
   public subjects$ = combineLatest([
     this.subjectsService.subjects.pipe(
       filter(subjects => !!subjects)
     ),
-    this.searchProject.valueChanges.pipe(
+    this.searchSubject.valueChanges.pipe(
       startWith(''),
       debounceTime(300)
     )]).pipe(

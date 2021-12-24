@@ -1,7 +1,9 @@
 <div class="header">
     <h1>Мои предметы</h1>
-    <button class='add-subjects'>Добавить предмет</button>
-    <input>
+    <!--
+        <button class='add-subjects'>Добавить предмет</button>
+    -->
+    <input placeholder="Поиск" [formControl]="searchSubject" class="search-input">
 </div>
 <div class="list-subjects">
     <app-subject-item *ngFor="let subject of subjects$ | async" [subject]="subject"></app-subject-item>

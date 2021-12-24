@@ -12,28 +12,16 @@ export class SubjectsService {
 
   public subjects = new BehaviorSubject<UserSubject[]>([]);
   
-  constructor(api: ApiService) {
+  constructor(private readonly api: ApiService) {
     this.initialSubject();
   }
 
-  initialSubject() {
-    const subject: UserSubject[] = [{
-        id: '',
-        ownerId: '',
-        name: 'penis',
-        privat: true,
-        description: 'zalupa',
-        photoBase64: 'her',
-    },
-    {
-        id: '',
-        ownerId: '',
-        name: 'aaas',
-        privat: true,
-        description: 'zalupa',
-        photoBase64: 'her',
-    }]
-
+  async initialSubject() {
+    const id = localStorage.getItem('userLogin');
+    if (!id)
+      return;
+    
+    const subject = await this.api.getUserSubject(id).toPromise();
     this.subjects.next(subject);
   }
 

@@ -3,6 +3,9 @@
 }
 .header {
     display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 40px;
     margin-bottom: 90px;
 }
 
@@ -20,4 +23,10 @@ h1 {
     line-height: 105px;
     letter-spacing: 0.02em;
     color: white;
+}
+
+.search-input {
+    margin-bottom: 20px;
+    width: 30%;
+    height: 40px;
 }
