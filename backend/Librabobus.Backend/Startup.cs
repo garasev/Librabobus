@@ -44,7 +44,19 @@ namespace Librabobus.Backend
             services.AddRepositories();
             services.AddDtoConverters();
             services.AddModelConverters();
+            
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
 
+            
             services.AddSwaggerGen();
             
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -94,6 +106,8 @@ namespace Librabobus.Backend
             
             app.UseAuthentication();
             app.UseAuthorization();
+            
+            app.UseCors();
             
             app.UseEndpoints(endpoints =>
             {

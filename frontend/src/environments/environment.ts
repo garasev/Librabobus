@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   
-  urlServer: 'http://10.5.5.106',
+  urlServer: 'http://localhost:5000',
 };
 
 /*

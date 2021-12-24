@@ -1,4 +1,4 @@
 export interface UserLogin {
-    login: string;
-    accessToken: string;
+    id: string;
+    access_token: string;
 }

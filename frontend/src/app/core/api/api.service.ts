@@ -15,7 +15,7 @@ export class ApiService {
 
   // POST /api/auth/login
   public login(login: string, password: string): Observable<UserLogin> {
-    const url = `${environment.urlServer}/api/auth/login`;
+    const url = `${environment.urlServer}/login`;
     return this.http.post<UserLogin>(url, { login, password });
   }
 

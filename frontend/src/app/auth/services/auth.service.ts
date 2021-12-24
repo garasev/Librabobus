@@ -52,14 +52,14 @@ export class AuthService {
 
   public async login(login: string, password: string) {
     try {
-      const resp = {accessToken: 'abobus', login: 'zalupa'};
-     // const resp = await this.api.login(login, password).toPromise();
+      const resp = await this.api.login(login, password).toPromise();
 
-      localStorage.setItem(this.ACCESS_TOKEN_KEY, resp.accessToken);
-      localStorage.setItem(this.USER_LOGIN_KEY, resp.login);
+      localStorage.setItem(this.ACCESS_TOKEN_KEY, resp.access_token);
+      localStorage.setItem(this.USER_LOGIN_KEY, resp.id);
 
-      this.accessToken = resp.accessToken;
-      this.userLogin = resp.login;
+      this.accessToken = resp.access_token;
+      this.userLogin = resp.id;
+
 
       this.router.navigate(['profile']);
     } catch (error) {

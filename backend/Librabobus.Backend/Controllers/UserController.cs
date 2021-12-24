@@ -238,6 +238,7 @@ namespace Librabobus.Backend.Controllers
 
                 var response = new
                 {
+                    id = identity!.Name,
                     access_token = encodedJwt
                 };
 
@@ -260,8 +261,8 @@ namespace Librabobus.Backend.Controllers
             
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, account.Login),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, account.Name)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, account.Id.ToString()),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, account.Login)
             };
             var claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
