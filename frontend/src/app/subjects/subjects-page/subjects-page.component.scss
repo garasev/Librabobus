@@ -1,0 +1,23 @@
+:host {
+    padding: 59px;
+}
+.header {
+    display: flex;
+    margin-bottom: 90px;
+}
+
+.list-subjects {
+    display: flex;
+    gap: 40px;
+}
+
+h1 {
+    margin: 0;
+    font-family: Roboto;
+    font-size: 90px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 105px;
+    letter-spacing: 0.02em;
+    color: white;
+}

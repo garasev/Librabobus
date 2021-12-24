@@ -26,7 +26,6 @@ export class AuthPageComponent implements OnInit {
   }
 
   public signIn() {
-    console.log('zali')
     if (this.authForm.invalid) {
       return;
     }
