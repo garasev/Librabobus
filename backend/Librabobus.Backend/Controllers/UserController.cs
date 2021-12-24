@@ -197,7 +197,7 @@ namespace Librabobus.Backend.Controllers
         /// <summary>
         /// Получить аккаунт по id
         /// </summary>
-        /// <param name="id">Идентификатор аккаунта</param>
+        /// <param name="loginDto">Информация о пользователе</param>
         /// <response code="200">Получен аккаунт с необходимым id.</response>
         /// <response code="401">Отказ в доступе: пользователь не авторизован.</response>
         /// <response code="404">Аккаунт с указанным id не найден.</response>
@@ -209,14 +209,14 @@ namespace Librabobus.Backend.Controllers
         [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, type: typeof(EmptyResult), description: "Аутентификационные данные не совпадают.")]
         [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, type: typeof(EmptyResult), description: "Аккаунт не найден.")]
         [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(EmptyResult), description: "Ошибка на стороне сервера.")]
-        public async Task<IActionResult> Login([FromBody] UserDto userDto)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             
             try
             {
-                var identity = await GetIdentity(userDto);
+                var identity = await GetIdentity(loginDto.Login!, loginDto.Password!);
 
                 if (identity == null)
                 {
@@ -248,10 +248,10 @@ namespace Librabobus.Backend.Controllers
                 return NotFound(ex.Message);
             }
         }
-        private async Task<ClaimsIdentity?> GetIdentity(UserDto userDto)
+        private async Task<ClaimsIdentity?> GetIdentity(string login, string password)
         {
 
-            var account = await _userRepository.Login(userDto.Login, userDto.Password);
+            var account = await _userRepository.Login(login, password);
 
             if (account == null)
             {
