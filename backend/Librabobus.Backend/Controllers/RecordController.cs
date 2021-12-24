@@ -9,6 +9,7 @@ using Librabobus.Backend.Models.Record;
 using Librabobus.Backend.Models.User;
 using Librabobus.Backend.Repositories.Api;
 using Librabobus.Backend.Repositories.Impl.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -34,6 +35,7 @@ namespace Librabobus.Backend.Controllers
         /// </summary>
         /// <response code="200">Получены все записии.</response>
         /// <response code="500">Ошибка на стороне сервера.</response>
+        [Authorize]
         [HttpGet]
         [SwaggerOperation("Получить все записи.")]
         [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(List<RecordDto>), description: "Получены все записи.")]

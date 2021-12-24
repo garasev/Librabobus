@@ -1,13 +1,21 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Librabobus.Backend.Dtos;
 using Librabobus.Backend.Dtos.User;
 using Librabobus.Backend.Models.User;
 using Librabobus.Backend.Repositories.Api;
+using Librabobus.Backend.Repositories.Impl.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Qoollo.Hamster.Backend;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Claims;
+using System.Collections.Generic;
+
+
 
 namespace Librabobus.Backend.Controllers
 {
@@ -15,11 +23,11 @@ namespace Librabobus.Backend.Controllers
     [ApiController]
     public class UserController: ControllerBase
     {
-        readonly private IUserRepository _userRepository;
-        readonly private IDtoConverter<UserPageModel, UserPageDto> _userPageConverter;
-        readonly private IDtoConverter<UserSubModel, UserSubDto> _userSubConverter;
-        readonly private IDtoConverter<UserModel, UserDto> _userConverter;
-        readonly private IDtoConverter<PatchUserModel, PatchUserDto> _userPatchConverter;
+        private readonly IUserRepository _userRepository;
+        private readonly IDtoConverter<UserPageModel, UserPageDto> _userPageConverter;
+        private readonly IDtoConverter<UserSubModel, UserSubDto> _userSubConverter;
+        private readonly IDtoConverter<UserModel, UserDto> _userConverter;
+        private readonly IDtoConverter<PatchUserModel, PatchUserDto> _userPatchConverter;
 
         public UserController(IUserRepository userRepository,
             IDtoConverter<UserPageModel, UserPageDto> userPageConverter,
@@ -117,7 +125,7 @@ namespace Librabobus.Backend.Controllers
         /// <response code="200">Пользователь зарегистрирован.</response>
         /// <response code="500">Ошибка на стороне сервера.</response>
         [HttpPost]
-        [Route("create")]
+        [Route("")]
         [SwaggerOperation("Зарегистрировать пользователя.")]
         [SwaggerResponse(statusCode: 200, type: typeof(UserPageDto), description: "Пользователь зарегистрирован.")]
         [SwaggerResponse(statusCode: 500, type: typeof(EmptyResult), description: "Ошибка на стороне сервера.")]
@@ -142,7 +150,7 @@ namespace Librabobus.Backend.Controllers
         /// <response code="200">Пользователи получены.</response>
         /// <response code="500">Ошибка на стороне сервера.</response>
         [HttpGet]
-        [Route("users")]
+        [Route("")]
         [SwaggerOperation("Получить всех пользователей.")]
         [SwaggerResponse(statusCode: 200, type: typeof(UserPageDto), description: "Пользователи получены.")]
         [SwaggerResponse(statusCode: 500, type: typeof(EmptyResult), description: "Ошибка на стороне сервера.")]
@@ -184,6 +192,81 @@ namespace Librabobus.Backend.Controllers
                 response = StatusCode(StatusCodes.Status500InternalServerError, ex.Message); 
             }
             return response;
+        }
+        
+        /// <summary>
+        /// Получить аккаунт по id
+        /// </summary>
+        /// <param name="id">Идентификатор аккаунта</param>
+        /// <response code="200">Получен аккаунт с необходимым id.</response>
+        /// <response code="401">Отказ в доступе: пользователь не авторизован.</response>
+        /// <response code="404">Аккаунт с указанным id не найден.</response>
+        /// <response code="500">Ошибка на стороне сервера.</response>
+        [HttpPost("/login")]
+        [SwaggerOperation("Авторизоваться")]
+        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(UserDto), description: "Пользователь авторизован.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, type: typeof(EmptyResult), description: "Параметры не прошли проверку.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, type: typeof(EmptyResult), description: "Аутентификационные данные не совпадают.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, type: typeof(EmptyResult), description: "Аккаунт не найден.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(EmptyResult), description: "Ошибка на стороне сервера.")]
+        public async Task<IActionResult> Login([FromBody] UserDto userDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            try
+            {
+                var identity = await GetIdentity(userDto);
+
+                if (identity == null)
+                {
+                    var message = "Invalid authentication data.";
+                    return Unauthorized(message);
+                }
+
+                var now = DateTime.UtcNow;
+                // JWT-token initialization
+                var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE,
+                    notBefore: now,
+                    claims: identity?.Claims,
+                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(),
+                        SecurityAlgorithms.HmacSha256));
+                var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+                var response = new
+                {
+                    access_token = encodedJwt
+                };
+
+                return Ok(response);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+        private async Task<ClaimsIdentity?> GetIdentity(UserDto userDto)
+        {
+
+            var account = await _userRepository.Login(userDto.Login, userDto.Password);
+
+            if (account == null)
+            {
+                return null;
+            }
+            
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, account.Login),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, account.Name)
+            };
+            var claimsIdentity =
+                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
+            return claimsIdentity;
         }
     }
 }

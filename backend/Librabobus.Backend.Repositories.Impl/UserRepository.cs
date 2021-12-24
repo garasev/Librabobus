@@ -120,5 +120,26 @@ namespace Librabobus.Backend.Repositories.Impl
 	
             await _context.SaveChangesAsync();
         }
+        
+        public async Task<UserModel?> Login(string login, string password)
+        {
+            var account = await _context.User!
+                .Where(c => c.Login == login)
+                .FirstOrDefaultAsync();
+
+            if (account == null)
+            {
+                throw new Exception($"Account with Login: {login} not found.");
+            }
+
+            return account.Hash != account.Salt + password ? null : new UserModel(
+                id: account.Id,
+                name: account.Name,
+                about: account.About!,
+                photoBase64: account.PhotoBase64!,
+                login: account.Login,
+                password: password);
+        }
+
     }
 }
