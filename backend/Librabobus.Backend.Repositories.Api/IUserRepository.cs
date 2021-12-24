@@ -18,5 +18,7 @@ namespace Librabobus.Backend.Repositories.Api
         Task<List<UserModel>> GetUsersAsync();
         
         Task PatchUserAsync(Guid id, PatchUserModel patchUserModel);
+
+        Task<UserModel?> Login(string login, string password);
     }
 }

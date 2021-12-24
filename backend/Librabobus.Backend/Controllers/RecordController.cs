@@ -9,6 +9,7 @@ using Librabobus.Backend.Models.Record;
 using Librabobus.Backend.Models.User;
 using Librabobus.Backend.Repositories.Api;
 using Librabobus.Backend.Repositories.Impl.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -29,11 +30,12 @@ namespace Librabobus.Backend.Controllers
             _recordConverter = recordConverter;
         }
         
-         /// <summary>
+        /// <summary>
         /// Получить все записи.
         /// </summary>
         /// <response code="200">Получены все записии.</response>
         /// <response code="500">Ошибка на стороне сервера.</response>
+        [Authorize]
         [HttpGet]
         [SwaggerOperation("Получить все записи.")]
         [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(List<RecordDto>), description: "Получены все записи.")]
@@ -52,6 +54,33 @@ namespace Librabobus.Backend.Controllers
             }
             return response;
         }
+        
+        /// <summary>
+        /// Получить все записи по id предмета.
+        /// </summary>
+        /// <response code="200">Получены все записии.</response>
+        /// <response code="500">Ошибка на стороне сервера.</response>
+        [Authorize]
+        [HttpGet]
+        [Route("/sub/{subId:guid}")]
+        [SwaggerOperation("Получить все записи по id предмета.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(List<RecordDto>), description: "Получены все записи.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(EmptyResult), description: "Ошибка на стороне сервера.")]
+        public async Task<IActionResult> GetSubRecords(Guid subId)
+        {
+            IActionResult response;
+            try
+            {
+                var records = await _recordRepository.FindAllRecordAsync();
+                response = Ok(records.Select(record => _recordConverter.Convert(record)).Where(record => record.SubjectId == subId).ToArray());
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return response;
+        }
+        
         /// <summary>
         /// Получить запись по id.
         /// </summary>

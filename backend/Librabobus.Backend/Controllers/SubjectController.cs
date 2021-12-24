@@ -31,7 +31,7 @@ namespace Librabobus.Backend.Controllers
             _subjectConverter = subjectConverter;
         }
         
-         /// <summary>
+        /// <summary>
         /// Получить все предметы.
         /// </summary>
         /// <response code="200">Получены все предметы.</response>
@@ -54,6 +54,33 @@ namespace Librabobus.Backend.Controllers
             }
             return response;
         }
+        
+        /// <summary>
+        /// Получить все предметы пользователя.
+        /// </summary>
+        /// <response code="200">Получены все предметы.</response>
+        /// <response code="500">Ошибка на стороне сервера.</response>
+        [HttpGet]
+        [Route("user/{userId:guid}")]
+        [SwaggerOperation("Получить все предметы пользователя..")]
+        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(List<SubjectDto>), description: "Получены все предметы.")]
+        [SwaggerResponse(statusCode: StatusCodes.Status500InternalServerError, type: typeof(EmptyResult), description: "Ошибка на стороне сервера.")]
+        public async Task<IActionResult> GetUserSubjects(Guid userId)
+        {
+            IActionResult response;
+            try
+            {
+                var subjects = await _subjectRepository.FindAllSubjectAsync();
+                response = Ok(subjects.Select(subject => _subjectConverter.Convert(subject)).Where(subject => subject.OwnerId == userId).ToArray());
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return response;
+        }
+        
+        
         /// <summary>
         /// Получить предемет по id.
         /// </summary>
