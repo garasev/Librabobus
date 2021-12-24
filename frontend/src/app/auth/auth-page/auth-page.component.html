@@ -8,10 +8,10 @@
         <p class="title">{{description}}</p>
     </div>
 
-    <div class="fields">
-       <input placeholder="Логин">
+    <div class="fields" [formGroup]='authForm'>
+       <input placeholder="Логин" formControlName="login">
        <div class="password">
-            <input placeholder="Пароль">
+            <input placeholder="Пароль" formControlName="password">
             <a>
                 <p>Сброс пароля</p>
             </a>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="action">
-        <button class="auth">ВОЙТИ</button>
+        <button class="auth" (click)="signIn()">ВОЙТИ</button>
         <div class="registration">
             <p class="registration_title">Еще нет аккаунта?</p>
             <a routerLink="/registration" routerLinkActive="active">
